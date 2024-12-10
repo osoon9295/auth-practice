@@ -2,8 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import "./App.css";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+
+import Layout from "./components/Layout";
 
 function App() {
   const [expenses, setExpenses] = useState([
@@ -66,18 +69,24 @@ function App() {
     },
   ]);
 
+  const [user, setUser] = useState(null);
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={<Home expenses={expenses} setExpenses={setExpenses} />}
-          />
-          <Route
-            path="/detail/:id"
-            element={<Detail expenses={expenses} setExpenses={setExpenses} />}
-          />
+          <Route path="/" element={<Layout setUser={setUser} user={user} />}>
+            <Route
+              index
+              element={<Home expenses={expenses} setExpenses={setExpenses} />}
+            />
+            <Route
+              path="/detail/:id"
+              element={<Detail expenses={expenses} setExpenses={setExpenses} />}
+            />
+            <Route path="/sign_in" element={<SignIn setUser={setUser} />} />
+            <Route path="/sign_up" element={<SignUp />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
